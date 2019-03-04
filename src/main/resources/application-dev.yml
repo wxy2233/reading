@@ -1,0 +1,56 @@
+#端口号
+server:
+  port: 9999
+
+#数据库连接池
+spring:
+  #数据源
+  datasource:
+    name: mymall
+    url: jdbc:mysql://127.0.0.1:3306/reading?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: root
+    password: root
+    #连接池
+    type: com.alibaba.druid.pool.DruidDataSource
+    #驱动
+    driver-class-name: com.mysql.jdbc.Driver
+
+
+#确定使用的框架之后，习惯从底层搭建
+#配置mybatis
+mybatis:
+  configuration:
+    #开启驼峰命名转换，在数据库中我们习惯命名user_name,但在java中我们习惯使用驼峰命名 userName
+    map-underscore-to-camel-case: true
+    #配置sql打印到控制台
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  #表示我们的Mapper文件存放的位置，当我们的Mapper文件跟对应的Mapper接口处于同一位置的时候可以不用指定该属性的值
+  mapper-locations: classpath:mybatis/sqlmapper/*.xml
+  #一般对应我们的实体类所在的包，这个时候会自动取对应包中不包括包名的简单类名作为包括包名的别名。多个package之间可以用逗号或者分号等来进行分隔
+  #如果不配置，在xml中的resultype我们需要写全名称，带上包名<select id="getUsers" resultType="com.majing.learning.mybatis.entity.User">
+  #配置之后，只需要类名
+  #也可以说 扫描pojo类的位置,在此处指明扫描实体类的包，在mapper中就可以不用写pojo类的全路径名了
+  type-aliases-package: com.example.reading.domain
+
+########## 通用Mapper ##########好像并没有用，先注掉
+#mapper:
+#  mappers: com.example.checking.tkMapper
+#  identity: MYSQL
+#  not-empty: true
+
+########## springboot内置简单日志环境的搭建##########
+logging:
+  #日志级别控制
+  level:
+    #root日志以WARN级别输出
+    root: info
+    #也可以自定义：包下所有class以warn级别输出
+    com.example.checking.service: warn
+    #日志文件所在路径
+    #file: C:\\Users\\xuan\\Desktop\\my.log
+    #pattern:
+    # 冒号后面不能以%开头，首尾加上‘ 解决此问题
+    #日志在文件中的输出格式
+    #file: '%d{yyyy/MM/dd-HH:mm:ss} [%thread] %-5level %logger- %msg%n'
+    #日志在控制台的输出格式。还是默认的好看，不需要的话，不用配置
+    #console:  '%d{yyyy/MM/dd-HH:mm:ss} [%thread] %-5level %logger- %msg%n'
